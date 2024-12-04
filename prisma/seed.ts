@@ -5,31 +5,31 @@ const prisma = new PrismaClient();
 
 async function main(): Promise<void> {
     // 유저 데이터 추가
-    const users = [
-        {
-            userName: '조하나',
-            userYear: 7,
-        },
-        {
-            userName: '조하나',
-            userYear: 1,
-        },
-        {
-            userName: '고예진',
-            userYear: 7,
-        },
-    ];
-    const existingUsers = await prisma.user.count();
-    if (existingUsers === 0) {
-        for (const user of users) {
-            await prisma.user.create({
-                data: user,
-            });
-        }
-        Logger.log('유저 데이터를 데이터베이스에 삽입했습니다.');
-    } else {
-        Logger.log('유저 데이터가 이미 존재하여 삽입을 건너뛰었습니다.');
-    }
+    // const users = [
+    //     {
+    //         userName: '조하나',
+    //         userYear: 7,
+    //     },
+    //     {
+    //         userName: '조하나',
+    //         userYear: 1,
+    //     },
+    //     {
+    //         userName: '고예진',
+    //         userYear: 7,
+    //     },
+    // ];
+    // const existingUsers = await prisma.user.count();
+    // if (existingUsers === 0) {
+    //     for (const user of users) {
+    //         await prisma.user.create({
+    //             data: user,
+    //         });
+    //     }
+    //     Logger.log('유저 데이터를 데이터베이스에 삽입했습니다.');
+    // } else {
+    //     Logger.log('유저 데이터가 이미 존재하여 삽입을 건너뛰었습니다.');
+    // }
 
     // 질문 데이터 추가
     const questions = [
@@ -86,14 +86,22 @@ async function main(): Promise<void> {
     // 경품 데이터 추가
     const draws = [
         {
+            drawId: 1,
+            drawName: '마켓컬리 3만원 금액권',
+            drawTotal: 2,
+        },
+        {
+            drawId: 2,
             drawName: '스타벅스 기프티콘',
             drawTotal: 8,
         },
         {
+            drawId: 3,
             drawName: '공차 기프티콘',
             drawTotal: 7,
         },
         {
+            drawId: 4,
             drawName: '문화상품권',
             drawTotal: 5,
         },

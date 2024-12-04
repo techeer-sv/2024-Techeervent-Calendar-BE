@@ -15,22 +15,24 @@ model User {
 
   calenders Calender[]
   winnings  Winning[]
-  answers   Answer[]
 }
 
 model Calender {
   calenderId     Int      @id @default(autoincrement())
   calenderDate   Int
-  calenderOpened Boolean
   userId         Int
+  questionId     Int
   createdAt      DateTime @default(now())
+  calenderAnswer String   @db.VarChar(1000)
 
-  user User @relation(fields: [userId], references: [userId])
+  user     User      @relation(fields: [userId], references: [userId])
+  winnings Winning[]
+  question Question  @relation(fields: [questionId], references: [questionId])
 }
 
 model Draw {
   drawId    Int      @id @default(autoincrement())
-  drawName  String   @db.VarChar(10)
+  drawName  String   @db.VarChar(100)
   drawTotal Int
   createdAt DateTime @default(now())
 
@@ -38,13 +40,15 @@ model Draw {
 }
 
 model Winning {
-  winningId Int      @id @default(autoincrement())
-  drawId    Int
-  userId    Int
-  createdAt DateTime @default(now())
+  winningId  Int      @id @default(autoincrement())
+  drawId     Int
+  userId     Int
+  calenderId Int
+  createdAt  DateTime @default(now())
 
-  draw Draw @relation(fields: [drawId], references: [drawId])
-  user User @relation(fields: [userId], references: [userId])
+  draw     Draw     @relation(fields: [drawId], references: [drawId])
+  user     User     @relation(fields: [userId], references: [userId])
+  calender Calender @relation(fields: [calenderId], references: [calenderId])
 }
 
 model Question {
@@ -52,16 +56,5 @@ model Question {
   questionContent String   @db.VarChar(300)
   createdAt       DateTime @default(now())
 
-  answers Answer[]
-}
-
-model Answer {
-  answerId      Int      @id @default(autoincrement())
-  questionId    Int
-  userId        Int
-  answerContent String   @db.VarChar(500)
-  createdAt     DateTime @default(now())
-
-  question Question @relation(fields: [questionId], references: [questionId])
-  user     User     @relation(fields: [userId], references: [userId])
+  Calender Calender[]
 }
