@@ -1,0 +1,67 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  userId    Int      @id @default(autoincrement())
+  userName  String
+  userYear  Int
+  createdAt DateTime @default(now())
+
+  calenders Calender[]
+  winnings  Winning[]
+  answers   Answer[]
+}
+
+model Calender {
+  calenderId     Int      @id @default(autoincrement())
+  calenderDate   DateTime
+  calenderOpened Boolean
+  userId         Int
+  createdAt      DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [userId])
+}
+
+model Draw {
+  drawId    Int      @id @default(autoincrement())
+  drawName  String
+  drawTotal Int
+  createdAt DateTime @default(now())
+
+  winnings Winning[]
+}
+
+model Winning {
+  winningId Int      @id @default(autoincrement())
+  drawId    Int
+  userId    Int
+  createdAt DateTime @default(now())
+
+  draw Draw @relation(fields: [drawId], references: [drawId])
+  user User @relation(fields: [userId], references: [userId])
+}
+
+model Question {
+  questionId      Int      @id @default(autoincrement())
+  questionContent String
+  createdAt       DateTime @default(now())
+
+  answers Answer[]
+}
+
+model Answer {
+  answerId      Int      @id @default(autoincrement())
+  questionId    Int
+  userId        Int
+  answerContent String
+  createdAt     DateTime @default(now())
+
+  question Question @relation(fields: [questionId], references: [questionId])
+  user     User     @relation(fields: [userId], references: [userId])
+}
