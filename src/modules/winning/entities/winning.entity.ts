@@ -1,7 +1,12 @@
+import { Draw, User } from '@prisma/client';
+
 export class WinningEntity {
-    winnigId: number;
+    winningId: number;
     drawId: number;
     userId: number;
     calenderId: number;
     createdAt: Date;
+
+    draw: Draw;
+    user: User;
 }
