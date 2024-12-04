@@ -1,4 +1,5 @@
-import { Calender } from '@prisma/client';
+import { Calender, Question } from '@prisma/client';
+import { WinningEntity } from '../../winning/entities/winning.entity';
 
 export class CalenderEntity implements Calender {
     calenderId: number;
@@ -7,4 +8,7 @@ export class CalenderEntity implements Calender {
     questionId: number;
     calenderAnswer: string;
     createdAt: Date;
+
+    question: Question;
+    winnings: WinningEntity[];
 }

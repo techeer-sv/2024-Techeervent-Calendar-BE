@@ -26,8 +26,8 @@ model Calender {
   calenderAnswer String   @db.VarChar(1000)
 
   user     User      @relation(fields: [userId], references: [userId])
-  winnings Winning[]
   question Question  @relation(fields: [questionId], references: [questionId])
+  winning  Winning[]
 }
 
 model Draw {
