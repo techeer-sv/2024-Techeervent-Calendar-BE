@@ -1,7 +1,5 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { AnswerModule } from './modules/answer/answer.module';
 import { DrawModule } from './modules/draw/draw.module';
 import { QuestionModule } from './modules/question/question.module';
@@ -19,7 +17,5 @@ import { CalenderModule } from './modules/calender/calender.module';
         UserModule,
         WinningModule,
     ],
-    controllers: [AppController],
-    providers: [AppService],
 })
 export class AppModule {}
