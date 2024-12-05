@@ -9,7 +9,7 @@ datasource db {
 
 model User {
   userId    Int      @id @default(autoincrement())
-  userName  String   @db.VarChar(10)
+  userName  String   @db.VarChar(20)
   userYear  Int
   createdAt DateTime @default(now())
 
@@ -25,9 +25,9 @@ model Calender {
   createdAt      DateTime @default(now())
   calenderAnswer String   @db.VarChar(1000)
 
-  user     User      @relation(fields: [userId], references: [userId])
-  question Question  @relation(fields: [questionId], references: [questionId])
-  winning  Winning[]
+  user     User     @relation(fields: [userId], references: [userId])
+  question Question @relation(fields: [questionId], references: [questionId])
+  winning  Winning?
 }
 
 model Draw {
@@ -43,7 +43,7 @@ model Winning {
   winningId  Int      @id @default(autoincrement())
   drawId     Int
   userId     Int
-  calenderId Int
+  calenderId Int      @unique // 일대일 관계 보장
   createdAt  DateTime @default(now())
 
   draw     Draw     @relation(fields: [drawId], references: [drawId])

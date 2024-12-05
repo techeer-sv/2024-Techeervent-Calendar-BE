@@ -1,7 +1,7 @@
 -- CreateTable
 CREATE TABLE "User" (
     "userId" SERIAL NOT NULL,
-    "userName" VARCHAR(10) NOT NULL,
+    "userName" VARCHAR(20) NOT NULL,
     "userYear" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -49,6 +49,9 @@ CREATE TABLE "Question" (
 
     CONSTRAINT "Question_pkey" PRIMARY KEY ("questionId")
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Winning_calenderId_key" ON "Winning"("calenderId");
 
 -- AddForeignKey
 ALTER TABLE "Calender" ADD CONSTRAINT "Calender_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("userId") ON DELETE RESTRICT ON UPDATE CASCADE;

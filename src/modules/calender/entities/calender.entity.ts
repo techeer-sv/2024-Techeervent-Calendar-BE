@@ -11,5 +11,5 @@ export class CalenderEntity implements Calender {
 
     user: User;
     question: Question;
-    winnings: WinningEntity[];
+    winning: WinningEntity;
 }

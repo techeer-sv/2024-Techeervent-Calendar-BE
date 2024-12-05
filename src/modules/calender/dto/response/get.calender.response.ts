@@ -13,6 +13,6 @@ export class GetCalenderResponse {
             question: calenderEntity.question.questionContent,
             answer: calenderEntity.calenderAnswer,
         };
-        this.drawName = calenderEntity.winnings?.[0]?.draw?.drawName || null;
+        this.drawName = calenderEntity.winning?.draw?.drawName ?? null;
     }
 }

@@ -13,7 +13,7 @@ export class CalenderRepository {
             include: {
                 user: true,
                 question: true,
-                winnings: {
+                winning: {
                     include: {
                         draw: true,
                         user: true,
@@ -43,7 +43,7 @@ export class CalenderRepository {
             include: {
                 user: true,
                 question: true,
-                winnings: {
+                winning: {
                     include: {
                         draw: true,
                         user: true,

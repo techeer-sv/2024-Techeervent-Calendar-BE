@@ -90,12 +90,12 @@ async function main(): Promise<void> {
         {
             drawId: 2, // 스타벅스
             userId: 3, // 고예진 (userYear: 7)
-            calenderId: 1, // 25일
+            calenderId: 4, // 25일
         },
         {
             drawId: 3, // 공차
             userId: 2, // 조하나 (userYear: 1)
-            calenderId: 1, // 25일
+            calenderId: 3, // 29일
         },
     ];
     for (const winning of winnings) {
