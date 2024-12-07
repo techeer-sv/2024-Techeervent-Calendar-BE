@@ -9,28 +9,30 @@ datasource db {
 
 model User {
   userId    Int      @id @default(autoincrement())
-  userName  String
+  userName  String   @db.VarChar(20)
   userYear  Int
   createdAt DateTime @default(now())
 
   calenders Calender[]
   winnings  Winning[]
-  answers   Answer[]
 }
 
 model Calender {
   calenderId     Int      @id @default(autoincrement())
-  calenderDate   DateTime
-  calenderOpened Boolean
+  calenderDate   Int
   userId         Int
+  questionId     Int
   createdAt      DateTime @default(now())
+  calenderAnswer String   @db.VarChar(1000)
 
-  user User @relation(fields: [userId], references: [userId])
+  user     User     @relation(fields: [userId], references: [userId])
+  question Question @relation(fields: [questionId], references: [questionId])
+  winning  Winning?
 }
 
 model Draw {
   drawId    Int      @id @default(autoincrement())
-  drawName  String
+  drawName  String   @db.VarChar(100)
   drawTotal Int
   createdAt DateTime @default(now())
 
@@ -38,30 +40,21 @@ model Draw {
 }
 
 model Winning {
-  winningId Int      @id @default(autoincrement())
-  drawId    Int
-  userId    Int
-  createdAt DateTime @default(now())
+  winningId  Int      @id @default(autoincrement())
+  drawId     Int
+  userId     Int
+  calenderId Int      @unique // 일대일 관계 보장
+  createdAt  DateTime @default(now())
 
-  draw Draw @relation(fields: [drawId], references: [drawId])
-  user User @relation(fields: [userId], references: [userId])
+  draw     Draw     @relation(fields: [drawId], references: [drawId])
+  user     User     @relation(fields: [userId], references: [userId])
+  calender Calender @relation(fields: [calenderId], references: [calenderId])
 }
 
 model Question {
   questionId      Int      @id @default(autoincrement())
-  questionContent String
+  questionContent String   @db.VarChar(300)
   createdAt       DateTime @default(now())
 
-  answers Answer[]
-}
-
-model Answer {
-  answerId      Int      @id @default(autoincrement())
-  questionId    Int
-  userId        Int
-  answerContent String
-  createdAt     DateTime @default(now())
-
-  question Question @relation(fields: [questionId], references: [questionId])
-  user     User     @relation(fields: [userId], references: [userId])
+  Calender Calender[]
 }

@@ -25,6 +25,11 @@ async function bootstrap(): Promise<void> {
             .setTitle('Techeervent')
             .setDescription('Techeervent의 API 명세입니다.')
             .setVersion('1.0')
+            .addTag('User')
+            .addTag('Calender')
+            .addTag('Question')
+            .addTag('Draw')
+            .addTag('Winning')
             .build();
 
         const document = SwaggerModule.createDocument(app, options);
