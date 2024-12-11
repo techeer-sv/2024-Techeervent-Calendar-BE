@@ -1,8 +1,8 @@
-import { Controller, Get, Param, Query } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { CalendarService } from './calendar.service';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { GetAnswerResponse } from './dto/response/get.answer.response';
 import { GetAnswerRequest } from './dto/request/get.answer.request';
+import { CreateCalendarRequest } from './dto/request/create.calendar.request';
 
 @ApiTags('Calendar')
 @Controller('calendar')
@@ -47,6 +47,21 @@ export class CalendarController {
         return {
             message: '유저의 캘린더 내용을 조회했습니다.',
             data: userCalendar,
+        };
+    }
+
+    @Post('/:userId')
+    @ApiOperation({
+        summary: '출석 및 경품 추첨',
+        description: '답변을 저장해 출석한 후 경품 추첨 결과를 반환합니다.',
+    })
+    async createCalendarDraw(
+        @Body() request: CreateCalendarRequest,
+    ): Promise<any> {
+        const result = await this.calendarService.createCalendarDraw(request);
+        return {
+            message: '출석 처리 후 경품 추첨 결과를 조회했습니다.',
+            data: result,
         };
     }
 }

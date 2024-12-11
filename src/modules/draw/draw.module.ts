@@ -8,5 +8,6 @@ import { DrawRepository } from './repository/draw.repository';
     imports: [PrismaModule],
     controllers: [DrawController],
     providers: [DrawService, DrawRepository],
+    exports: [DrawService],
 })
 export class DrawModule {}

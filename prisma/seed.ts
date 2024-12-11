@@ -87,22 +87,22 @@ async function main(): Promise<void> {
     const draws = [
         {
             drawId: 1,
-            drawName: '마켓컬리 3만원 금액권',
-            drawTotal: 2,
+            drawName: '컬리 상품권 1만원',
+            drawTotal: 3,
         },
         {
             drawId: 2,
-            drawName: '스타벅스 기프티콘',
-            drawTotal: 8,
+            drawName: '컬리 캘린더',
+            drawTotal: 3,
         },
         {
             drawId: 3,
-            drawName: '공차 기프티콘',
-            drawTotal: 7,
+            drawName: '비타 500',
+            drawTotal: 30,
         },
         {
             drawId: 4,
-            drawName: '문화상품권',
+            drawName: '현직자 스페셜 기프트',
             drawTotal: 5,
         },
     ];

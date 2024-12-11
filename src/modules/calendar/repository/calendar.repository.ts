@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { CalendarEntity } from '../entities/calendar.entity';
 import { GetAnswerRequest } from '../dto/request/get.answer.request';
+import { CreateCalendarRequest } from '../dto/request/create.calendar.request';
 
 @Injectable()
 export class CalendarRepository {
@@ -13,12 +14,7 @@ export class CalendarRepository {
             include: {
                 user: true,
                 question: true,
-                winning: {
-                    include: {
-                        draw: true,
-                        user: true,
-                    },
-                },
+                draw: true,
             },
             orderBy: {
                 calendarDate: 'asc',
@@ -43,12 +39,7 @@ export class CalendarRepository {
             include: {
                 user: true,
                 question: true,
-                winning: {
-                    include: {
-                        draw: true,
-                        user: true,
-                    },
-                },
+                draw: true,
             },
             orderBy: {
                 calendarDate: 'asc',
@@ -60,5 +51,40 @@ export class CalendarRepository {
 
     async getAnswerCount(): Promise<number> {
         return this.prisma.calendar.count();
+    }
+
+    async getAllWinnings(): Promise<CalendarEntity[]> {
+        return this.prisma.calendar.findMany({
+            where: {
+                drawId: {
+                    not: null,
+                },
+            },
+            include: {
+                user: true,
+                question: true,
+                draw: true,
+            },
+            orderBy: {
+                calendarDate: 'asc',
+            },
+        });
+    }
+
+    async createCalendar(
+        request: CreateCalendarRequest,
+        drawId: number | null,
+    ): Promise<CalendarEntity> {
+        return this.prisma.calendar.create({
+            data: {
+                ...request,
+                drawId,
+            },
+            include: {
+                user: true,
+                question: true,
+                draw: true,
+            },
+        });
     }
 }
