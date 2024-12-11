@@ -4,12 +4,12 @@ import { DrawModule } from './modules/draw/draw.module';
 import { QuestionModule } from './modules/question/question.module';
 import { UserModule } from './modules/user/user.module';
 import { WinningModule } from './modules/winning/winning.module';
-import { CalenderModule } from './modules/calender/calender.module';
+import { CalendarModule } from './modules/calendar/calendar.module';
 
 @Module({
     imports: [
         ConfigModule.forRoot({ isGlobal: true }),
-        CalenderModule,
+        CalendarModule,
         DrawModule,
         QuestionModule,
         UserModule,

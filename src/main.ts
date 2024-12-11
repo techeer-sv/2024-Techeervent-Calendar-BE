@@ -26,7 +26,7 @@ async function bootstrap(): Promise<void> {
             .setDescription('Techeervent의 API 명세입니다.')
             .setVersion('1.0')
             .addTag('User')
-            .addTag('Calender')
+            .addTag('Calendar')
             .addTag('Question')
             .addTag('Draw')
             .addTag('Winning')

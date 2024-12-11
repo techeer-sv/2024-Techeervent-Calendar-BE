@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
-import { CalenderEntity } from '../entities/calender.entity';
+import { CalendarEntity } from '../entities/calendar.entity';
 import { GetAnswerRequest } from '../dto/request/get.answer.request';
 
 @Injectable()
-export class CalenderRepository {
+export class CalendarRepository {
     constructor(private readonly prisma: PrismaService) {}
 
-    async getUserCalender(userId: number): Promise<CalenderEntity[]> {
-        return this.prisma.calender.findMany({
+    async getUserCalendar(userId: number): Promise<CalendarEntity[]> {
+        return this.prisma.calendar.findMany({
             where: { userId },
             include: {
                 user: true,
@@ -21,14 +21,14 @@ export class CalenderRepository {
                 },
             },
             orderBy: {
-                calenderDate: 'asc',
+                calendarDate: 'asc',
             },
         });
     }
 
-    async getAllAnswers(request: GetAnswerRequest): Promise<CalenderEntity[]> {
+    async getAllAnswers(request: GetAnswerRequest): Promise<CalendarEntity[]> {
         const { offset, limit, author } = request;
-        return this.prisma.calender.findMany({
+        return this.prisma.calendar.findMany({
             where: {
                 ...(author
                     ? {
@@ -51,7 +51,7 @@ export class CalenderRepository {
                 },
             },
             orderBy: {
-                calenderDate: 'asc',
+                calendarDate: 'asc',
             },
             skip: offset || 0,
             take: limit || 10,
@@ -59,6 +59,6 @@ export class CalenderRepository {
     }
 
     async getAnswerCount(): Promise<number> {
-        return this.prisma.calender.count();
+        return this.prisma.calendar.count();
     }
 }

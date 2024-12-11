@@ -9,15 +9,15 @@ CREATE TABLE "User" (
 );
 
 -- CreateTable
-CREATE TABLE "Calender" (
-    "calenderId" SERIAL NOT NULL,
-    "calenderDate" INTEGER NOT NULL,
+CREATE TABLE "Calendar" (
+    "calendarId" SERIAL NOT NULL,
+    "calendarDate" INTEGER NOT NULL,
     "userId" INTEGER NOT NULL,
     "questionId" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "calenderAnswer" VARCHAR(1000) NOT NULL,
+    "calendarAnswer" VARCHAR(1000) NOT NULL,
 
-    CONSTRAINT "Calender_pkey" PRIMARY KEY ("calenderId")
+    CONSTRAINT "Calendar_pkey" PRIMARY KEY ("calendarId")
 );
 
 -- CreateTable
@@ -35,7 +35,7 @@ CREATE TABLE "Winning" (
     "winningId" SERIAL NOT NULL,
     "drawId" INTEGER NOT NULL,
     "userId" INTEGER NOT NULL,
-    "calenderId" INTEGER NOT NULL,
+    "calendarId" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "Winning_pkey" PRIMARY KEY ("winningId")
@@ -51,13 +51,13 @@ CREATE TABLE "Question" (
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Winning_calenderId_key" ON "Winning"("calenderId");
+CREATE UNIQUE INDEX "Winning_calendarId_key" ON "Winning"("calendarId");
 
 -- AddForeignKey
-ALTER TABLE "Calender" ADD CONSTRAINT "Calender_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("userId") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Calendar" ADD CONSTRAINT "Calendar_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("userId") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Calender" ADD CONSTRAINT "Calender_questionId_fkey" FOREIGN KEY ("questionId") REFERENCES "Question"("questionId") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Calendar" ADD CONSTRAINT "Calendar_questionId_fkey" FOREIGN KEY ("questionId") REFERENCES "Question"("questionId") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Winning" ADD CONSTRAINT "Winning_drawId_fkey" FOREIGN KEY ("drawId") REFERENCES "Draw"("drawId") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -66,4 +66,4 @@ ALTER TABLE "Winning" ADD CONSTRAINT "Winning_drawId_fkey" FOREIGN KEY ("drawId"
 ALTER TABLE "Winning" ADD CONSTRAINT "Winning_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("userId") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Winning" ADD CONSTRAINT "Winning_calenderId_fkey" FOREIGN KEY ("calenderId") REFERENCES "Calender"("calenderId") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Winning" ADD CONSTRAINT "Winning_calendarId_fkey" FOREIGN KEY ("calendarId") REFERENCES "Calendar"("calendarId") ON DELETE RESTRICT ON UPDATE CASCADE;
