@@ -28,7 +28,7 @@ async function bootstrap(): Promise<void> {
             .addTag('User')
             .addTag('Calendar')
             .addTag('Question')
-            .addTag('Draw')
+            // .addTag('Draw')
             .addTag('Winning')
             .build();
 
