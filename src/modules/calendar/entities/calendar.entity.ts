@@ -1,12 +1,12 @@
-import { Calender, Question, User } from '@prisma/client';
+import { Calendar, Question, User } from '@prisma/client';
 import { WinningEntity } from '../../winning/entities/winning.entity';
 
-export class CalenderEntity implements Calender {
-    calenderId: number;
-    calenderDate: number;
+export class CalendarEntity implements Calendar {
+    calendarId: number;
+    calendarDate: number;
     userId: number;
     questionId: number;
-    calenderAnswer: string;
+    calendarAnswer: string;
     createdAt: Date;
 
     user: User;

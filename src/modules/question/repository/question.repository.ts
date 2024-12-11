@@ -12,7 +12,7 @@ export class QuestionRepository {
       FROM "Question" q
       WHERE q."questionId" NOT IN (
         SELECT a."questionId"
-        FROM "Calender" a
+        FROM "Calendar" a
         WHERE a."userId" = ${userId}
       )
       ORDER BY RANDOM()

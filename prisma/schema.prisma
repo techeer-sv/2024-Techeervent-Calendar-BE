@@ -13,17 +13,17 @@ model User {
   userYear  Int
   createdAt DateTime @default(now())
 
-  calenders Calender[]
+  calendars Calendar[]
   winnings  Winning[]
 }
 
-model Calender {
-  calenderId     Int      @id @default(autoincrement())
-  calenderDate   Int
+model Calendar {
+  calendarId     Int      @id @default(autoincrement())
+  calendarDate   Int
   userId         Int
   questionId     Int
   createdAt      DateTime @default(now())
-  calenderAnswer String   @db.VarChar(1000)
+  calendarAnswer String   @db.VarChar(1000)
 
   user     User     @relation(fields: [userId], references: [userId])
   question Question @relation(fields: [questionId], references: [questionId])
@@ -43,12 +43,12 @@ model Winning {
   winningId  Int      @id @default(autoincrement())
   drawId     Int
   userId     Int
-  calenderId Int      @unique // 일대일 관계 보장
+  calendarId Int      @unique // 일대일 관계 보장
   createdAt  DateTime @default(now())
 
   draw     Draw     @relation(fields: [drawId], references: [drawId])
   user     User     @relation(fields: [userId], references: [userId])
-  calender Calender @relation(fields: [calenderId], references: [calenderId])
+  calendar Calendar @relation(fields: [calendarId], references: [calendarId])
 }
 
 model Question {
@@ -56,5 +56,5 @@ model Question {
   questionContent String   @db.VarChar(300)
   createdAt       DateTime @default(now())
 
-  Calender Calender[]
+  Calendar Calendar[]
 }

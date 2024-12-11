@@ -4,7 +4,7 @@ export class WinningEntity implements Winning {
     winningId: number;
     drawId: number;
     userId: number;
-    calenderId: number;
+    calendarId: number;
     createdAt: Date;
 
     draw: Draw;
