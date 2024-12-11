@@ -1,7 +1,6 @@
 import { Controller, Get, Param, Query } from '@nestjs/common';
 import { CalendarService } from './calendar.service';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { GetAnswerResponse } from './dto/response/get.answer.response';
 import { GetAnswerRequest } from './dto/request/get.answer.request';
 
 @ApiTags('Calendar')

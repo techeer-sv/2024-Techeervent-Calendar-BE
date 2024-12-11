@@ -14,20 +14,20 @@ model User {
   createdAt DateTime @default(now())
 
   calendars Calendar[]
-  winnings  Winning[]
 }
 
 model Calendar {
   calendarId     Int      @id @default(autoincrement())
   calendarDate   Int
+  calendarAnswer String   @db.VarChar(1000)
   userId         Int
   questionId     Int
+  drawId         Int?
   createdAt      DateTime @default(now())
-  calendarAnswer String   @db.VarChar(1000)
 
   user     User     @relation(fields: [userId], references: [userId])
   question Question @relation(fields: [questionId], references: [questionId])
-  winning  Winning?
+  draw     Draw?    @relation(fields: [drawId], references: [drawId])
 }
 
 model Draw {
@@ -36,19 +36,7 @@ model Draw {
   drawTotal Int
   createdAt DateTime @default(now())
 
-  winnings Winning[]
-}
-
-model Winning {
-  winningId  Int      @id @default(autoincrement())
-  drawId     Int
-  userId     Int
-  calendarId Int      @unique // 일대일 관계 보장
-  createdAt  DateTime @default(now())
-
-  draw     Draw     @relation(fields: [drawId], references: [drawId])
-  user     User     @relation(fields: [userId], references: [userId])
-  calendar Calendar @relation(fields: [calendarId], references: [calendarId])
+  calendars Calendar[]
 }
 
 model Question {
