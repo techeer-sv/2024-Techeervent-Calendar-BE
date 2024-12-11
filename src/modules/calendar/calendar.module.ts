@@ -4,9 +4,10 @@ import { CalendarController } from './calendar.controller';
 import { PrismaModule } from '../prisma/prisma.module';
 import { CalendarRepository } from './repository/calendar.repository';
 import { WinningController } from './winning.controller';
+import { DrawModule } from '../draw/draw.module';
 
 @Module({
-    imports: [PrismaModule],
+    imports: [PrismaModule, DrawModule],
     controllers: [CalendarController, WinningController],
     providers: [CalendarService, CalendarRepository],
 })
