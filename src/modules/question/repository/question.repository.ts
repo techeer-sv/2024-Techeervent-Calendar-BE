@@ -20,4 +20,8 @@ export class QuestionRepository {
     `;
         return result[0]; // 하나의 질문만 반환
     }
+
+    async getQuestionById(questionId: number): Promise<QuestionEntity> {
+        return this.prisma.question.findUnique({ where: { questionId } });
+    }
 }

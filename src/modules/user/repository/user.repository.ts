@@ -19,4 +19,8 @@ export class UserRepository {
             },
         });
     }
+
+    async getUserById(userId: number): Promise<UserEntity> {
+        return this.prisma.user.findUnique({ where: { userId } });
+    }
 }

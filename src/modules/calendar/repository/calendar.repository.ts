@@ -48,6 +48,22 @@ export class CalendarRepository {
         });
     }
 
+    async existingUserCalendarByDate(
+        userId: number,
+        calendarDate: number,
+    ): Promise<boolean> {
+        const exists = await this.prisma.calendar.findFirst({
+            where: {
+                userId,
+                calendarDate,
+            },
+            select: {
+                calendarId: true, // 어떤 필드든 하나만 선택하여 존재 여부만 확인
+            },
+        });
+        return !!exists;
+    }
+
     async getAllAnswers(request: GetAnswerRequest): Promise<CalendarEntity[]> {
         const { offset, limit, author } = request;
         return this.prisma.calendar.findMany({

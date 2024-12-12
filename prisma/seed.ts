@@ -10,6 +10,7 @@ async function main(): Promise<void> {
         { questionContent: '2024년, 나를 가장 많이 웃게 한 일은 무엇인가요?' },
         { questionContent: '테커 활동 중 가장 뜻깊었던 순간은 언제인가요?' },
         { questionContent: '올해 가장 기억에 남는 순간이 무엇인가요?' },
+        { questionContent: '2024년에 가장 도전적이었던 순간은 언제였나요?' },
     ];
     const existingQuestions = await prisma.question.count();
     if (existingQuestions === 0) {
