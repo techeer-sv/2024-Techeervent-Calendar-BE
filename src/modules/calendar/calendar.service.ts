@@ -4,9 +4,10 @@ import { GetAnswerCountResponse } from './dto/response/get.answer-count.response
 import { GetCalendarResponse } from './dto/response/get.calendar.response';
 import { GetAnswerResponse } from './dto/response/get.answer.response';
 import { GetAnswerRequest } from './dto/request/get.answer.request';
-import { GetCalendarDrawResponse } from './dto/response/get.calendar-draw.response';
 import { CreateCalendarRequest } from './dto/request/create.calendar.request';
 import { DrawService } from '../draw/draw.service';
+import { GetDrawResponse } from '../draw/dto/response/get.draw.response';
+import { GetWinningResponse } from './dto/response/get.winning.response';
 
 @Injectable()
 export class CalendarService {
@@ -14,6 +15,16 @@ export class CalendarService {
         private readonly calendarRepository: CalendarRepository,
         private readonly drawService: DrawService,
     ) {}
+
+    async createCalendarDraw(
+        request: CreateCalendarRequest,
+    ): Promise<GetDrawResponse> {
+        const draw = await this.drawService.executeDraw(request.calendarDate);
+        const drawId = draw ? draw.drawId : null;
+
+        await this.calendarRepository.createCalendar(request, drawId);
+        return new GetDrawResponse(draw.drawName);
+    }
 
     async getUserCalendar(userId: number): Promise<GetCalendarResponse[]> {
         const userCalendar =
@@ -35,20 +46,8 @@ export class CalendarService {
         return new GetAnswerCountResponse(answerCount);
     }
 
-    async getAllWinnings(): Promise<GetCalendarDrawResponse[]> {
+    async getAllWinnings(): Promise<GetWinningResponse[]> {
         const winnings = await this.calendarRepository.getAllWinnings();
-        return winnings.map((winning) => new GetCalendarDrawResponse(winning));
-    }
-
-    async createCalendarDraw(
-        request: CreateCalendarRequest,
-    ): Promise<GetCalendarDrawResponse> {
-        const draw = await this.drawService.executeDraw();
-        const drawId = draw ? draw.drawId : null;
-        const calendar = await this.calendarRepository.createCalendar(
-            request,
-            drawId,
-        );
-        return new GetCalendarDrawResponse(calendar);
+        return winnings.map((winning) => new GetWinningResponse(winning));
     }
 }

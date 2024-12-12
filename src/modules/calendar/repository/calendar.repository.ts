@@ -8,6 +8,32 @@ import { CreateCalendarRequest } from '../dto/request/create.calendar.request';
 export class CalendarRepository {
     constructor(private readonly prisma: PrismaService) {}
 
+    async createCalendar(
+        request: CreateCalendarRequest,
+        drawId: number | null,
+    ): Promise<CalendarEntity> {
+        return this.prisma.calendar.create({
+            data: {
+                ...request,
+                drawId,
+            },
+            include: {
+                user: true,
+                question: true,
+                draw: true,
+            },
+        });
+    }
+
+    async getTodayWinningsCount(calendarDate: number): Promise<number> {
+        return this.prisma.calendar.count({
+            where: {
+                calendarDate,
+                drawId: { not: null },
+            },
+        });
+    }
+
     async getUserCalendar(userId: number): Promise<CalendarEntity[]> {
         return this.prisma.calendar.findMany({
             where: { userId },
@@ -67,23 +93,6 @@ export class CalendarRepository {
             },
             orderBy: {
                 calendarDate: 'asc',
-            },
-        });
-    }
-
-    async createCalendar(
-        request: CreateCalendarRequest,
-        drawId: number | null,
-    ): Promise<CalendarEntity> {
-        return this.prisma.calendar.create({
-            data: {
-                ...request,
-                drawId,
-            },
-            include: {
-                user: true,
-                question: true,
-                draw: true,
             },
         });
     }

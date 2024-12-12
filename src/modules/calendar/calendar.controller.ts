@@ -9,6 +9,21 @@ import { CreateCalendarRequest } from './dto/request/create.calendar.request';
 export class CalendarController {
     constructor(private readonly calendarService: CalendarService) {}
 
+    @Post()
+    @ApiOperation({
+        summary: '출석 및 경품 추첨',
+        description: '답변을 저장해 출석한 후 경품 추첨 결과를 반환합니다.',
+    })
+    async createCalendarDraw(
+        @Body() request: CreateCalendarRequest,
+    ): Promise<any> {
+        const result = await this.calendarService.createCalendarDraw(request);
+        return {
+            message: '출석 처리 후 경품 추첨 결과를 조회했습니다.',
+            data: result,
+        };
+    }
+
     @Get('/answer')
     @ApiOperation({
         summary: '답변 목록 조회 및 검색',
@@ -47,21 +62,6 @@ export class CalendarController {
         return {
             message: '유저의 캘린더 내용을 조회했습니다.',
             data: userCalendar,
-        };
-    }
-
-    @Post('/:userId')
-    @ApiOperation({
-        summary: '출석 및 경품 추첨',
-        description: '답변을 저장해 출석한 후 경품 추첨 결과를 반환합니다.',
-    })
-    async createCalendarDraw(
-        @Body() request: CreateCalendarRequest,
-    ): Promise<any> {
-        const result = await this.calendarService.createCalendarDraw(request);
-        return {
-            message: '출석 처리 후 경품 추첨 결과를 조회했습니다.',
-            data: result,
         };
     }
 }
