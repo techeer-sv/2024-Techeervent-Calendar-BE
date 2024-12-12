@@ -10,23 +10,11 @@ export class DrawService {
         private readonly calendarRepository: CalendarRepository,
     ) {}
 
-    async executeDraw(date: number): Promise<DrawEntity> {
+    async executeDraw(date: number): Promise<DrawEntity | null> {
         const count = await this.calendarRepository.getTodayWinningsCount(date);
-        const isWinner = Math.random() < 0.8;
+        const isWinner = Math.random() < 0.04;
         if (isWinner && count < 4) {
-            const draws: DrawEntity[] =
-                await this.drawRepository.getAllDrawsLock();
-            if (draws.length > 0) {
-                const weightedDraws: DrawEntity[] = draws.flatMap((draw) =>
-                    Array(draw.drawTotal).fill(draw),
-                );
-                const selectedDraw: DrawEntity =
-                    weightedDraws[
-                        Math.floor(Math.random() * weightedDraws.length)
-                    ];
-                await this.drawRepository.decrementDraw(selectedDraw.drawId);
-                return selectedDraw;
-            }
+            return await this.drawRepository.executeDrawLock();
         }
         return null;
     }

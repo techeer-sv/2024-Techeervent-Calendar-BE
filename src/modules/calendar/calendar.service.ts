@@ -21,9 +21,8 @@ export class CalendarService {
     ): Promise<GetDrawResponse> {
         const draw = await this.drawService.executeDraw(request.calendarDate);
         const drawId = draw ? draw.drawId : null;
-
         await this.calendarRepository.createCalendar(request, drawId);
-        return new GetDrawResponse(draw.drawName);
+        return new GetDrawResponse(draw ? draw.drawName : null);
     }
 
     async getUserCalendar(userId: number): Promise<GetCalendarResponse[]> {

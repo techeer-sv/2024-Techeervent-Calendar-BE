@@ -1,7 +1,7 @@
 export class GetDrawResponse {
-    readonly drawName: string;
+    readonly drawName: string | null;
 
-    constructor(drawName: string) {
-        this.drawName = drawName;
+    constructor(drawName?: string) {
+        this.drawName = drawName ?? null;
     }
 }
