@@ -10,6 +10,7 @@ import { GetDrawResponse } from '../draw/dto/response/get.draw.response';
 import { GetWinningResponse } from './dto/response/get.winning.response';
 import { UserRepository } from '../user/repository/user.repository';
 import {
+    DuplicateCalendarByDate,
     NotFoundQuestionException,
     NotFoundUserException,
 } from '../../global/exception/custom.exception';
@@ -28,20 +29,34 @@ export class CalendarService {
     async createCalendarDraw(
         request: CreateCalendarRequest,
     ): Promise<GetDrawResponse> {
-        if (!(await this.userRepository.getUserById(request.userId))) {
-            throw new NotFoundUserException();
-        }
-        if (
-            !(await this.questionRepository.getQuestionById(request.questionId))
-        ) {
-            throw new NotFoundQuestionException();
-        }
+        await this.validateCalendarRequest(request);
         const draw = await this.drawService.executeDraw(request.calendarDate);
         await this.calendarRepository.createCalendar(
             request,
             draw ? draw.drawId : null,
         );
         return new GetDrawResponse(draw ? draw.drawName : null);
+    }
+
+    private async validateCalendarRequest(
+        request: CreateCalendarRequest,
+    ): Promise<void> {
+        if (!(await this.userRepository.getUserById(request.userId))) {
+            throw new NotFoundUserException();
+        }
+        if (
+            await this.calendarRepository.existingUserCalendarByDate(
+                request.userId,
+                request.calendarDate,
+            )
+        ) {
+            throw new DuplicateCalendarByDate();
+        }
+        if (
+            !(await this.questionRepository.getQuestionById(request.questionId))
+        ) {
+            throw new NotFoundQuestionException();
+        }
     }
 
     // 답변 목록 조회 및 검색
