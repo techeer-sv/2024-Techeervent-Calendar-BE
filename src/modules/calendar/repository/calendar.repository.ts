@@ -72,7 +72,7 @@ export class CalendarRepository {
                     ? {
                           user: {
                               userName: {
-                                  contains: author, // author가 포함된 userName 검색
+                                  contains: author,
                               },
                           },
                       }
@@ -83,11 +83,16 @@ export class CalendarRepository {
                 question: true,
                 draw: true,
             },
-            orderBy: {
-                calendarDate: 'asc',
-            },
+            orderBy: [
+                {
+                    calendarDate: 'asc',
+                },
+                {
+                    createdAt: 'asc',
+                },
+            ],
             skip: offset || 0,
-            take: limit || 10,
+            take: (limit || 10) + 1, // limit보다 1개 더 가져와서 hasNext 판단
         });
     }
 
