@@ -65,8 +65,6 @@ export class CalendarService {
         request: GetAnswerRequest,
     ): Promise<GetAnswerPagableResponse> {
         const answers = await this.calendarRepository.getAllAnswers(request);
-        Logger.log(`answers.length: ${answers.length}`);
-        Logger.log(`request.limit: ${request.limit}`);
         // hasNext 값 계산 (limit보다 데이터가 많으면 다음 페이지 존재)
         const hasNext = answers.length > (request.limit || 10);
         const answersResponse = answers
