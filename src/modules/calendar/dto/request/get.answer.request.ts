@@ -4,7 +4,7 @@ import { Type } from 'class-transformer';
 
 export class GetAnswerRequest {
     @ApiPropertyOptional({
-        description: '오프셋',
+        description: '건너뛸 데이터 개수',
         example: 0,
     })
     @IsOptional()
@@ -13,7 +13,7 @@ export class GetAnswerRequest {
     readonly offset?: number;
 
     @ApiPropertyOptional({
-        description: '가져올 개수',
+        description: '가져올 데이터 개수',
         example: 10,
     })
     @IsOptional()
@@ -22,7 +22,7 @@ export class GetAnswerRequest {
     readonly limit?: number;
 
     @ApiPropertyOptional({
-        description: '검색할 작성자',
+        description: '검색할 작성자 명',
         example: '조하나',
     })
     @IsOptional()

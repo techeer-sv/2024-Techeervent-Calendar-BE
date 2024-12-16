@@ -20,7 +20,7 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "seed": "node dist/prisma/seed.js",
-    "seed:dev": "nest build && node dist/prisma/seed.js && node dist/prisma/seed-dev.js"
+    "seed:dev": "npx prisma migrate deploy && npx prisma generate && nest build && node dist/prisma/seed.js && node dist/prisma/seed-dev.js"
   },
   "dependencies": {
     "@nestjs/common": "^10.4.13",
