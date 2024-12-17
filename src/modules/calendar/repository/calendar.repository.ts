@@ -64,9 +64,26 @@ export class CalendarRepository {
         return !!exists;
     }
 
-    async getAllAnswers(request: GetAnswerRequest): Promise<CalendarEntity[]> {
-        const { offset, limit, author } = request;
-        return this.prisma.calendar.findMany({
+    async getAllAnswers(
+        request: GetAnswerRequest,
+    ): Promise<{ total: number; items: CalendarEntity[] }> {
+        const { offset = 0, limit = 10, author } = request;
+        // 전체 레코드 수 조회
+        const total = await this.prisma.calendar.count({
+            where: {
+                ...(author
+                    ? {
+                          user: {
+                              userName: {
+                                  contains: author,
+                              },
+                          },
+                      }
+                    : {}),
+            },
+        });
+        // 조건에 맞는 데이터 조회
+        const answers = await this.prisma.calendar.findMany({
             where: {
                 ...(author
                     ? {
@@ -91,9 +108,13 @@ export class CalendarRepository {
                     createdAt: 'asc',
                 },
             ],
-            skip: offset || 0,
-            take: (limit || 10) + 1, // limit보다 1개 더 가져와서 hasNext 판단
+            skip: offset,
+            take: limit,
         });
+        return {
+            total,
+            items: answers,
+        };
     }
 
     async getAnswerCount(): Promise<number> {

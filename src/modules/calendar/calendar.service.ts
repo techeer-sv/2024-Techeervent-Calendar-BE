@@ -16,6 +16,7 @@ import {
 } from '../../global/exception/custom.exception';
 import { QuestionRepository } from '../question/repository/question.repository';
 import { GetAnswerPagableResponse } from './dto/response/get.answer-pagable.response';
+import { PagableMeta } from '../../global/common/pagable-meta';
 
 @Injectable()
 export class CalendarService {
@@ -65,12 +66,17 @@ export class CalendarService {
         request: GetAnswerRequest,
     ): Promise<GetAnswerPagableResponse> {
         const answers = await this.calendarRepository.getAllAnswers(request);
-        // hasNext 값 계산 (limit보다 데이터가 많으면 다음 페이지 존재)
-        const hasNext = answers.length > (request.limit || 10);
-        const answersResponse = answers
-            .slice(0, request.limit || 10)
-            .map((answer) => new GetAnswerResponse(answer));
-        return new GetAnswerPagableResponse(hasNext, answersResponse);
+        const items = answers.items.map(
+            (answer) => new GetAnswerResponse(answer),
+        );
+        // 메타 정보 생성
+        const meta = new PagableMeta(
+            answers.total,
+            answers.items.length,
+            request.offset,
+            request.limit,
+        );
+        return new GetAnswerPagableResponse(items, meta);
     }
 
     // 답변 개수 조회
