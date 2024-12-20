@@ -5,11 +5,11 @@ export class PagableMeta {
     readonly totalPages: number;
     readonly currentPage: number;
 
-    constructor(total: number, count: number, offset: number, limit: number) {
+    constructor(total: number, count: number, page: number, limit: number) {
         this.totalItems = total;
         this.itemCount = count;
         this.itemsPerPage = limit;
         this.totalPages = Math.ceil(total / limit);
-        this.currentPage = Math.floor(offset / limit) + 1;
+        this.currentPage = page + 1;
     }
 }
