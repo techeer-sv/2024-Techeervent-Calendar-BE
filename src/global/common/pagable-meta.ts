@@ -10,6 +10,6 @@ export class PagableMeta {
         this.itemCount = count;
         this.itemsPerPage = limit;
         this.totalPages = Math.ceil(total / limit);
-        this.currentPage = page + 1;
+        this.currentPage = page;
     }
 }
