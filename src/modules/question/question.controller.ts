@@ -1,7 +1,14 @@
-import { Controller, Get, Param, ParseIntPipe } from '@nestjs/common';
+import {
+    Controller,
+    Get,
+    HttpStatus,
+    Param,
+    ParseIntPipe,
+} from '@nestjs/common';
 import { QuestionService } from './question.service';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { GetQuestionResponse } from './dto/response/get.question.response';
+import { ResultResponse } from '../../global/response/result-response';
 
 @ApiTags('Question')
 @Controller('question')
@@ -16,7 +23,12 @@ export class QuestionController {
     })
     async getQuestion(
         @Param('userId', ParseIntPipe) userId: number,
-    ): Promise<GetQuestionResponse> {
-        return this.questionService.getQuestion(userId);
+    ): Promise<ResultResponse<GetQuestionResponse>> {
+        const question = await this.questionService.getQuestion(userId);
+        return new ResultResponse(
+            HttpStatus.OK,
+            '오늘의 질문을 조회했습니다.',
+            question,
+        );
     }
 }

@@ -1,9 +1,9 @@
-export class ResultResponse {
+export class ResultResponse<T> {
     status: number;
     message: string;
-    data: any;
+    data: T;
 
-    constructor(status: number, message: string, data: any) {
+    constructor(status: number, message: string, data: T) {
         this.status = status;
         this.message = message;
         this.data = data;

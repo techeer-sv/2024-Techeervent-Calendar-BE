@@ -1,6 +1,8 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Controller, Get, HttpStatus, Query } from '@nestjs/common';
 import { UserService } from './user.service';
 import { ApiOperation } from '@nestjs/swagger';
+import { ResultResponse } from '../../global/response/result-response';
+import { GetUserResponse } from './dto/response/get.user.response';
 
 @Controller('user')
 export class UserController {
@@ -12,11 +14,14 @@ export class UserController {
         description:
             '이름으로 유저를 검색합니다. 기수 기준 오름차순으로 정렬됩니다.',
     })
-    async getUsers(@Query('userName') userName: string): Promise<any> {
+    async getUsers(
+        @Query('userName') userName: string,
+    ): Promise<ResultResponse<GetUserResponse[]>> {
         const users = await this.userService.getUsers(userName);
-        return {
-            message: '유저를 검색 했습니다.',
-            data: users,
-        };
+        return new ResultResponse(
+            HttpStatus.OK,
+            '유저를 검색 했습니다.',
+            users,
+        );
     }
 }
