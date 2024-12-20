@@ -4,13 +4,13 @@ import { Type } from 'class-transformer';
 
 export class GetAnswerRequest {
     @ApiPropertyOptional({
-        description: '건너뛸 데이터 개수',
+        description: '건너뛸 페이지 개수',
         example: 0,
     })
     @IsOptional()
     @Type(() => Number)
     @IsNumber()
-    readonly offset?: number;
+    readonly page?: number;
 
     @ApiPropertyOptional({
         description: '가져올 데이터 개수',

@@ -67,7 +67,7 @@ export class CalendarRepository {
     async getAllAnswers(
         request: GetAnswerRequest,
     ): Promise<{ total: number; items: CalendarEntity[] }> {
-        const { offset = 0, limit = 10, author } = request;
+        const { page = 0, limit = 10, author } = request;
         // 전체 레코드 수 조회
         const total = await this.prisma.calendar.count({
             where: {
@@ -108,7 +108,7 @@ export class CalendarRepository {
                     createdAt: 'asc',
                 },
             ],
-            skip: offset,
+            skip: page * limit,
             take: limit,
         });
         return {

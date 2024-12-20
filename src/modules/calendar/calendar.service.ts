@@ -73,7 +73,7 @@ export class CalendarService {
         const meta = new PagableMeta(
             answers.total,
             answers.items.length,
-            request.offset,
+            request.page,
             request.limit,
         );
         return new GetAnswerPagableResponse(items, meta);
