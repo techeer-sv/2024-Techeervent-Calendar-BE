@@ -1,5 +1,7 @@
-import { Controller } from '@nestjs/common';
+import { Controller, HttpStatus } from '@nestjs/common';
 import { DrawService } from './draw.service';
+// import { ResultResponse } from '../../global/response/result-response';
+// import { GetDrawResponse } from './dto/response/get.draw.response';
 // import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
 // @ApiTags('Draw')
@@ -13,11 +15,12 @@ export class DrawController {
     //     description:
     //         '제공하는 경품 목록을 조회합니다. 총계가 적은 순으로 조회됩니다.',
     // })
-    // async getAllDraws(): Promise<any> {
+    // async getAllDraws(): Promise<ResultResponse<GetDrawResponse[]>> {
     //     const draws = await this.drawService.getAllDraws();
-    //     return {
-    //         message: '경품 목록을 조회했습니다.',
-    //         data: draws,
-    //     };
+    //     return new ResultResponse(
+    //         HttpStatus.OK,
+    //         '경품 목록을 조회했습니다.',
+    //         draws,
+    //     );
     // }
 }
