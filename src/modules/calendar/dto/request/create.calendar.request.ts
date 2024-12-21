@@ -5,11 +5,10 @@ import { Type } from 'class-transformer';
 export class CreateCalendarRequest {
     @ApiPropertyOptional({
         description: '유저 아이디',
-        example: 1,
+        example: 'hashedUserId',
     })
-    @Type(() => Number)
-    @IsNumber()
-    readonly userId: number;
+    @IsString()
+    readonly userId: string;
 
     @ApiPropertyOptional({
         description: '출석 날짜 (일자만 입력)',

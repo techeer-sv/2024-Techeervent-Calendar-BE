@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { UserEntity } from '../entities/user.entity';
+import { NotFoundUserException } from '../../../global/exception/custom.exception';
 
 @Injectable()
 export class UserRepository {
@@ -20,7 +21,14 @@ export class UserRepository {
         });
     }
 
-    async getUserById(userId: number): Promise<UserEntity> {
-        return this.prisma.user.findUnique({ where: { userId } });
+    async getUserIdByHashedId(hashedUserId: string): Promise<number> {
+        const user = await this.prisma.user.findUnique({
+            where: { hashedUserId },
+            select: { userId: true },
+        });
+        if (!user) {
+            throw new NotFoundUserException();
+        }
+        return user.userId;
     }
 }

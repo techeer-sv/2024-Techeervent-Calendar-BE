@@ -76,7 +76,7 @@ export class CalendarController {
             '유저 별 캘린더 내용을 조회합니다. 출석한 날짜에 대한 데이터만 존재합니다.',
     })
     async getUserCalendar(
-        @Param('userId') userId: number,
+        @Param('userId') userId: string,
     ): Promise<ResultResponse<GetCalendarResponse[]>> {
         const userCalendar = await this.calendarService.getUserCalendar(userId);
         return new ResultResponse(
