@@ -12,7 +12,6 @@ import { UserRepository } from '../user/repository/user.repository';
 import {
     DuplicateCalendarByDate,
     NotFoundQuestionException,
-    NotFoundUserException,
 } from '../../global/exception/custom.exception';
 import { QuestionRepository } from '../question/repository/question.repository';
 import { GetAnswerPagableResponse } from './dto/response/get.answer-pagable.response';
@@ -31,10 +30,14 @@ export class CalendarService {
     async createCalendarDraw(
         request: CreateCalendarRequest,
     ): Promise<GetDrawResponse> {
-        await this.validateCalendarRequest(request);
+        const userId = await this.userRepository.getUserIdByHashedId(
+            request.userId,
+        );
+        await this.validateCalendarRequest(request, userId);
         const draw = await this.drawService.executeDraw(request.calendarDate);
         await this.calendarRepository.createCalendar(
             request,
+            userId,
             draw ? draw.drawId : null,
         );
         return new GetDrawResponse(draw ? draw.drawName : null);
@@ -42,13 +45,11 @@ export class CalendarService {
 
     private async validateCalendarRequest(
         request: CreateCalendarRequest,
+        userId: number,
     ): Promise<void> {
-        if (!(await this.userRepository.getUserById(request.userId))) {
-            throw new NotFoundUserException();
-        }
         if (
             await this.calendarRepository.existingUserCalendarByDate(
-                request.userId,
+                userId,
                 request.calendarDate,
             )
         ) {
@@ -86,10 +87,11 @@ export class CalendarService {
     }
 
     // 유저 별 캘린더 조회
-    async getUserCalendar(userId: number): Promise<GetCalendarResponse[]> {
-        if (!(await this.userRepository.getUserById(userId))) {
-            throw new NotFoundUserException();
-        }
+    async getUserCalendar(
+        hashedUserId: string,
+    ): Promise<GetCalendarResponse[]> {
+        const userId =
+            await this.userRepository.getUserIdByHashedId(hashedUserId);
         const userCalendar =
             await this.calendarRepository.getUserCalendar(userId);
         return userCalendar.map(

@@ -8,10 +8,11 @@ datasource db {
 }
 
 model User {
-  userId    Int      @id @default(autoincrement())
-  userName  String   @db.VarChar(20)
-  userYear  Int
-  createdAt DateTime @default(now())
+  userId       Int      @id @default(autoincrement())
+  hashedUserId String   @unique @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userName     String   @db.VarChar(20)
+  userYear     Int
+  createdAt    DateTime @default(now())
 
   calendars Calendar[]
 }

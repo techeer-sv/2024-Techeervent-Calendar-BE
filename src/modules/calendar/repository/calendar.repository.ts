@@ -10,11 +10,20 @@ export class CalendarRepository {
 
     async createCalendar(
         request: CreateCalendarRequest,
+        userId: number,
         drawId: number | null,
     ): Promise<CalendarEntity> {
+        const {
+            calendarDate,
+            questionId,
+            calendarAnswer,
+        }: CreateCalendarRequest = request;
         return this.prisma.calendar.create({
             data: {
-                ...request,
+                userId,
+                calendarDate,
+                questionId,
+                calendarAnswer,
                 drawId,
             },
             include: {
