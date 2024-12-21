@@ -12,6 +12,11 @@ async function main(): Promise<void> {
             if (userCount === 0) {
                 const users = [
                     {
+                        userId: 7,
+                        userName: 'Andrew',
+                        userYear: 0,
+                    },
+                    {
                         userId: 1,
                         userName: '조하나',
                         userYear: 7,
@@ -61,7 +66,6 @@ async function main(): Promise<void> {
                 const calendars = [
                     // User 1 : 조하나 (7기) 6개
                     {
-                        calendarId: 1,
                         calendarDate: 25,
                         userId: 1,
                         questionId: 1,
@@ -70,7 +74,6 @@ async function main(): Promise<void> {
                         drawId: 1,
                     },
                     {
-                        calendarId: 2,
                         calendarDate: 26,
                         userId: 1,
                         questionId: 2,
@@ -78,7 +81,6 @@ async function main(): Promise<void> {
                             '친구들과 함께 간 캠핑 여행에서 웃음이 끊이지 않았습니다.',
                     },
                     {
-                        calendarId: 3,
                         calendarDate: 27,
                         userId: 1,
                         questionId: 3,
@@ -86,7 +88,6 @@ async function main(): Promise<void> {
                             '테커 프로젝트를 성공적으로 마무리한 것이 가장 뜻깊었습니다.',
                     },
                     {
-                        calendarId: 4,
                         calendarDate: 28,
                         userId: 1,
                         questionId: 4,
@@ -95,7 +96,6 @@ async function main(): Promise<void> {
                         drawId: 2,
                     },
                     {
-                        calendarId: 5,
                         calendarDate: 29,
                         userId: 1,
                         questionId: 5,
@@ -104,16 +104,60 @@ async function main(): Promise<void> {
                         drawId: 3,
                     },
                     {
-                        calendarId: 6,
                         calendarDate: 31,
                         userId: 1,
                         questionId: 7,
                         calendarAnswer:
                             '올해 개발자로서 가장 성장했던 순간은 협업 프로젝트를 진행할 때였습니다.',
                     },
+                    // User 2 : 조하나 (1기) 6개
+                    {
+                        calendarDate: 25,
+                        userId: 2,
+                        questionId: 1,
+                        calendarAnswer:
+                            '내년에는 아침 6시에 일어나는 습관을 기르고 싶습니다.',
+                        drawId: 1,
+                    },
+                    {
+                        calendarDate: 26,
+                        userId: 2,
+                        questionId: 2,
+                        calendarAnswer:
+                            '친구들과 함께 간 캠핑 여행에서 웃음이 끊이지 않았습니다.',
+                    },
+                    {
+                        calendarDate: 27,
+                        userId: 2,
+                        questionId: 3,
+                        calendarAnswer:
+                            '테커 프로젝트를 성공적으로 마무리한 것이 가장 뜻깊었습니다.',
+                    },
+                    {
+                        calendarDate: 28,
+                        userId: 2,
+                        questionId: 4,
+                        calendarAnswer:
+                            '첫 면접에서의 경험이 가장 기억에 남습니다.',
+                        drawId: 2,
+                    },
+                    {
+                        calendarDate: 29,
+                        userId: 2,
+                        questionId: 5,
+                        calendarAnswer:
+                            '테커 발표 준비 과정에서 어려움을 극복했던 순간이 도전적이었습니다.',
+                        drawId: 3,
+                    },
+                    {
+                        calendarDate: 31,
+                        userId: 2,
+                        questionId: 7,
+                        calendarAnswer:
+                            '올해 개발자로서 가장 성장했던 순간은 협업 프로젝트를 진행할 때였습니다.',
+                    },
                     // User 3 : 고예진 (7기) 4개
                     {
-                        calendarId: 7,
                         calendarDate: 26,
                         userId: 3,
                         questionId: 16,
@@ -121,7 +165,6 @@ async function main(): Promise<void> {
                             '내년에는 테커 프로젝트를 완벽하게 마무리하고 싶습니다.',
                     },
                     {
-                        calendarId: 8,
                         calendarDate: 28,
                         userId: 3,
                         questionId: 18,
@@ -129,7 +172,6 @@ async function main(): Promise<void> {
                         drawId: 4,
                     },
                     {
-                        calendarId: 9,
                         calendarDate: 29,
                         userId: 3,
                         questionId: 19,
@@ -137,7 +179,6 @@ async function main(): Promise<void> {
                             '미뤄뒀던 영어 공부를 내년에 꼭 하고 싶습니다.',
                     },
                     {
-                        calendarId: 10,
                         calendarDate: 31,
                         userId: 3,
                         questionId: 21,
@@ -146,7 +187,6 @@ async function main(): Promise<void> {
                     },
                     // User 4 : 이상민 (4기) 5개
                     {
-                        calendarId: 11,
                         calendarDate: 25,
                         userId: 4,
                         questionId: 22,
@@ -154,7 +194,6 @@ async function main(): Promise<void> {
                             '내년 이맘때의 나는 더 성장했을 것 같습니다.',
                     },
                     {
-                        calendarId: 12,
                         calendarDate: 27,
                         userId: 4,
                         questionId: 24,
@@ -162,7 +201,6 @@ async function main(): Promise<void> {
                             '올해를 5글자로 표현하면 "열심히 했다"입니다.',
                     },
                     {
-                        calendarId: 13,
                         calendarDate: 28,
                         userId: 4,
                         questionId: 25,
@@ -170,7 +208,6 @@ async function main(): Promise<void> {
                             '나의 성장을 방해했던 요소는 나태함입니다.',
                     },
                     {
-                        calendarId: 14,
                         calendarDate: 29,
                         userId: 4,
                         questionId: 20,
@@ -179,7 +216,6 @@ async function main(): Promise<void> {
                         drawId: 3,
                     },
                     {
-                        calendarId: 15,
                         calendarDate: 31,
                         userId: 4,
                         questionId: 22,
@@ -188,7 +224,6 @@ async function main(): Promise<void> {
                     },
                     // User 5 : 조진우 (7기) 6개
                     {
-                        calendarId: 16,
                         calendarDate: 25,
                         userId: 5,
                         questionId: 9,
@@ -196,7 +231,6 @@ async function main(): Promise<void> {
                             '올해 가장 고마운 사람은 저를 응원해준 동료들입니다.',
                     },
                     {
-                        calendarId: 17,
                         calendarDate: 26,
                         userId: 5,
                         questionId: 13,
@@ -204,7 +238,6 @@ async function main(): Promise<void> {
                             '2024년은 "변화의 해"라고 표현할 수 있습니다.',
                     },
                     {
-                        calendarId: 18,
                         calendarDate: 27,
                         userId: 5,
                         questionId: 1,
@@ -212,7 +245,6 @@ async function main(): Promise<void> {
                             '내년에 꾸준히 운동하는 습관을 기르고 싶습니다.',
                     },
                     {
-                        calendarId: 19,
                         calendarDate: 29,
                         userId: 5,
                         questionId: 8,
@@ -221,7 +253,6 @@ async function main(): Promise<void> {
                         drawId: 2,
                     },
                     {
-                        calendarId: 20,
                         calendarDate: 30,
                         userId: 5,
                         questionId: 10,
@@ -229,16 +260,14 @@ async function main(): Promise<void> {
                             '내년에 요리라는 새로운 취미를 도전하고 싶습니다.',
                     },
                     {
-                        calendarId: 21,
                         calendarDate: 31,
                         userId: 5,
                         questionId: 12,
                         calendarAnswer:
                             '테커는 저에게 도전과 성장의 기회였습니다.',
                     },
-                    // User 6 : 이승환 (4기) 6개
+                    // User 6 : 이승환 (4기) 7개
                     {
-                        calendarId: 22,
                         calendarDate: 25,
                         userId: 6,
                         questionId: 13,
@@ -246,7 +275,13 @@ async function main(): Promise<void> {
                             '2024년은 "배움의 해"로 기억될 것 같습니다.',
                     },
                     {
-                        calendarId: 23,
+                        calendarDate: 26,
+                        userId: 6,
+                        questionId: 21,
+                        calendarAnswer:
+                            '내년에는 새로운 팀과의 협업이 기대됩니다.',
+                    },
+                    {
                         calendarDate: 27,
                         userId: 6,
                         questionId: 16,
@@ -254,7 +289,6 @@ async function main(): Promise<void> {
                             '내년에는 더 책임감 있는 모습을 보이고 싶습니다.',
                     },
                     {
-                        calendarId: 24,
                         calendarDate: 28,
                         userId: 6,
                         questionId: 19,
@@ -262,7 +296,6 @@ async function main(): Promise<void> {
                             '내년에는 미뤄뒀던 여행을 꼭 떠나고 싶습니다.',
                     },
                     {
-                        calendarId: 25,
                         calendarDate: 29,
                         userId: 6,
                         questionId: 21,
@@ -270,7 +303,6 @@ async function main(): Promise<void> {
                             '내년에는 새로운 팀과의 협업이 기대됩니다.',
                     },
                     {
-                        calendarId: 26,
                         calendarDate: 30,
                         userId: 6,
                         questionId: 23,
@@ -278,12 +310,62 @@ async function main(): Promise<void> {
                             '올해 발견한 나의 장점은 빠른 적응력입니다.',
                     },
                     {
-                        calendarId: 27,
                         calendarDate: 31,
                         userId: 6,
                         questionId: 25,
                         calendarAnswer:
                             '올해를 5글자로 표현하면 "한 걸음 더"입니다.',
+                    },
+                    // User 7 : Andrew (0기) 7개
+                    {
+                        calendarDate: 25,
+                        userId: 7,
+                        questionId: 9,
+                        calendarAnswer:
+                            '올해 가장 고마운 사람은 저를 응원해준 동료들입니다.',
+                    },
+                    {
+                        calendarDate: 26,
+                        userId: 7,
+                        questionId: 13,
+                        calendarAnswer:
+                            '2024년은 "변화의 해"라고 표현할 수 있습니다.',
+                    },
+                    {
+                        calendarDate: 27,
+                        userId: 7,
+                        questionId: 1,
+                        calendarAnswer:
+                            '내년에 꾸준히 운동하는 습관을 기르고 싶습니다.',
+                    },
+                    {
+                        calendarDate: 28,
+                        userId: 7,
+                        questionId: 13,
+                        calendarAnswer:
+                            '2024년은 "변화의 해"라고 표현할 수 있습니다.',
+                    },
+                    {
+                        calendarDate: 29,
+                        userId: 7,
+                        questionId: 8,
+                        calendarAnswer:
+                            '가족의 응원이 가장 큰 힘이 되었습니다.',
+                        drawId: 2,
+                    },
+                    {
+                        calendarDate: 30,
+                        userId: 7,
+                        questionId: 10,
+                        calendarAnswer:
+                            '내년에 요리라는 새로운 취미를 도전하고 싶습니다.',
+                    },
+                    {
+                        calendarDate: 31,
+                        userId: 7,
+                        questionId: 12,
+                        calendarAnswer:
+                            '테커는 저에게 도전과 성장의 기회였습니다.',
                     },
                 ];
                 const calendarInserts = calendars.map((calendar) =>
@@ -293,7 +375,7 @@ async function main(): Promise<void> {
                 );
                 await Promise.all(calendarInserts);
                 Logger.log(
-                    '27개의 캘린더 데이터를 데이터베이스에 삽입했습니다.',
+                    '41개의 캘린더 데이터를 데이터베이스에 삽입했습니다.',
                 );
             } else {
                 Logger.log(
