@@ -31,4 +31,13 @@ export class UserRepository {
         }
         return user.userId;
     }
+
+    async createUser(userName: string, userYear: number): Promise<UserEntity> {
+        return this.prisma.user.create({
+            data: {
+                userName,
+                userYear,
+            },
+        });
+    }
 }
