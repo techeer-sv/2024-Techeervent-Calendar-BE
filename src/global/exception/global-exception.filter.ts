@@ -10,7 +10,7 @@ import { Request, Response } from 'express';
 
 @Catch()
 export class GlobalExceptionsFilter implements ExceptionFilter {
-    private readonly logger = new Logger(GlobalExceptionsFilter.name);
+    private readonly logger = new Logger('GlobalExceptionsFilter');
 
     catch(exception: unknown, host: ArgumentsHost): void {
         const ctx = host.switchToHttp();
@@ -22,44 +22,41 @@ export class GlobalExceptionsFilter implements ExceptionFilter {
                 ? exception.getStatus()
                 : HttpStatus.INTERNAL_SERVER_ERROR;
 
-        let message: string | object;
+        let message: string | string[] = '알 수 없는 오류가 발생했습니다.';
 
         if (exception instanceof HttpException) {
             const exceptionResponse = exception.getResponse();
-
-            if (
-                status === HttpStatus.BAD_REQUEST &&
+            // 메시지가 문자열 또는 객체인 경우 처리
+            if (typeof exceptionResponse === 'string') {
+                message = exceptionResponse;
+            } else if (
                 typeof exceptionResponse === 'object' &&
-                'message' in exceptionResponse
+                exceptionResponse.hasOwnProperty('message')
             ) {
-                const errorMessage = (exceptionResponse as any).message;
-                message = Array.isArray(errorMessage)
-                    ? errorMessage.join(', ') // 메시지가 배열인 경우 처리
-                    : errorMessage;
-            } else {
-                message = exception.message;
+                message = (exceptionResponse as any).message;
             }
-        } else {
+
+            // 상세 정보 로그 출력
+            this.logger.error({
+                status,
+                exceptionName: exception.constructor.name,
+                message,
+                path: request.url,
+                method: request.method,
+                stack: (exception as Error).stack,
+            });
+        } else if (status === HttpStatus.INTERNAL_SERVER_ERROR) {
             message =
-                status === HttpStatus.INTERNAL_SERVER_ERROR
-                    ? '서버에서 오류가 발생했습니다. 잠시 후 다시 시도해주세요.'
-                    : '알 수 없는 오류가 발생했습니다.';
+                '서버에서 오류가 발생했습니다. 잠시 후 다시 시도해주세요.';
+            this.logger.error(exception);
         }
 
-        // 응답 반환
+        // 응답 형식 설정
         response.status(status).json({
             statusCode: status,
             timestamp: new Date().toISOString(),
             path: request.url,
             message,
         });
-
-        // 예외 로깅
-        this.logger.error(
-            `Exception thrown: ${status} - ${
-                typeof message === 'string' ? message : JSON.stringify(message)
-            }`,
-            exception instanceof Error ? exception.stack : '',
-        );
     }
 }

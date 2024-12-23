@@ -1,5 +1,5 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { IsNumber, IsString, IsUUID } from 'class-validator';
+import { IsNumber, IsString, IsUUID, Min, Max } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class CreateCalendarRequest {
@@ -17,6 +17,8 @@ export class CreateCalendarRequest {
     })
     @Type(() => Number)
     @IsNumber()
+    @Min(25, { message: '서비스 날짜는 25일부터 31일 입니다.' })
+    @Max(31, { message: '서비스 날짜는 25일부터 31일 입니다.' })
     readonly calendarDate: number;
 
     @ApiPropertyOptional({
