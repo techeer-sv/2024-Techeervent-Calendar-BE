@@ -27,6 +27,12 @@ export class CalendarService {
         private readonly drawService: DrawService,
     ) {}
 
+    // 서버 날짜일자 반환
+    async getToday(): Promise<number> {
+        const serverDate = new Date();
+        return serverDate.getDate(); // 일
+    }
+
     // 출석 및 경품 추첨
     async createCalendarDraw(
         request: CreateCalendarRequest,
@@ -48,8 +54,7 @@ export class CalendarService {
 
     // 서버 일자 valdation
     private async validateDate(clientDate: number): Promise<void> {
-        const serverDate = new Date();
-        const serverDay = serverDate.getDate(); // 일
+        const serverDay = await this.getToday();
         if (clientDate !== serverDay) {
             throw new ValidationCalendarDate(clientDate, serverDay);
         }

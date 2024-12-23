@@ -22,6 +22,20 @@ import { GetCalendarResponse } from './dto/response/get.calendar.response';
 export class CalendarController {
     constructor(private readonly calendarService: CalendarService) {}
 
+    @Get('/today')
+    @ApiOperation({
+        summary: '서버 일자 조회',
+        description: '서버의 일자를 조회합니다.',
+    })
+    async getToday(): Promise<ResultResponse<number>> {
+        const date = await this.calendarService.getToday();
+        return new ResultResponse(
+            HttpStatus.OK,
+            '서버 일자를 조회했습니다.',
+            date,
+        );
+    }
+
     @Post()
     @ApiOperation({
         summary: '출석 및 경품 추첨',
