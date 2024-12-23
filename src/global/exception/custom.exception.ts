@@ -17,3 +17,12 @@ export class DuplicateCalendarByDate extends HttpException {
         super('이미 해당 날짜의 데이터가 존재합니다.', HttpStatus.CONFLICT);
     }
 }
+
+export class ValidationCalendarDate extends HttpException {
+    constructor(clientDate: number, serverDate: number) {
+        super(
+            `접근할 수 없는 날짜입니다. { 요청한 날짜: ${clientDate}, 서버 날짜: ${serverDate} }`,
+            HttpStatus.NOT_ACCEPTABLE,
+        );
+    }
+}

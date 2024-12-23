@@ -12,6 +12,7 @@ import { UserRepository } from '../user/repository/user.repository';
 import {
     DuplicateCalendarByDate,
     NotFoundQuestionException,
+    ValidationCalendarDate,
 } from '../../global/exception/custom.exception';
 import { QuestionRepository } from '../question/repository/question.repository';
 import { GetAnswerPagableResponse } from './dto/response/get.answer-pagable.response';
@@ -30,6 +31,8 @@ export class CalendarService {
     async createCalendarDraw(
         request: CreateCalendarRequest,
     ): Promise<GetDrawResponse> {
+        // 날짜 검증
+        await this.validateDate(request.calendarDate);
         const userId = await this.userRepository.getUserIdByHashedId(
             request.userId,
         );
@@ -43,6 +46,16 @@ export class CalendarService {
         return new GetDrawResponse(draw ? draw.drawName : null);
     }
 
+    // 서버 일자 valdation
+    private async validateDate(clientDate: number): Promise<void> {
+        const serverDate = new Date();
+        const serverDay = serverDate.getDate(); // 일
+        if (clientDate !== serverDay) {
+            throw new ValidationCalendarDate(clientDate, serverDay);
+        }
+    }
+
+    // 캘린더 생성 시 중복 검사
     private async validateCalendarRequest(
         request: CreateCalendarRequest,
         userId: number,
