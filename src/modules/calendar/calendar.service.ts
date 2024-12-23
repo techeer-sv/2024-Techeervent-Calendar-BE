@@ -86,7 +86,7 @@ export class CalendarService {
         request: GetAnswerRequest,
     ): Promise<GetAnswerPagableResponse> {
         const date = await this.getToday();
-        if (date !== 31) {
+        if (date >= 23 && date <= 30) {
             throw new NotAcceptableAnswers();
         }
         const answers = await this.calendarRepository.getAllAnswers(request);
