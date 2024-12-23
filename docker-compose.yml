@@ -16,7 +16,6 @@ services:
 
   nest:
     container_name: nest-techeervent
-#    image: hana3/techeervent-nest:latest
     build:
       context: .
       dockerfile: Dockerfile
@@ -26,6 +25,8 @@ services:
       - SWAGGER_URL=${SWAGGER_URL}
       - SWAGGER_USER=${SWAGGER_USER}
       - SWAGGER_PASSWORD=${SWAGGER_PASSWORD}
+      - ODDS_OF_WINNING=${ODDS_OF_WINNING}
+      - DAILY_OF_WINNING=${DAILY_OF_WINNING}
     ports:
       - '8000:8000'
     depends_on:
