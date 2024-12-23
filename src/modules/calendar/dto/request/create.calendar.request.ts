@@ -1,5 +1,5 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { IsNumber, IsString } from 'class-validator';
+import { IsNumber, IsString, IsUUID } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class CreateCalendarRequest {
@@ -8,6 +8,7 @@ export class CreateCalendarRequest {
         example: 'hashedUserId',
     })
     @IsString()
+    @IsUUID('4', { message: 'userId는 유효한 UUID 형식이어야 합니다.' })
     readonly userId: string;
 
     @ApiPropertyOptional({

@@ -5,6 +5,7 @@ import { ValidationPipe, Logger } from '@nestjs/common';
 import { PrismaService } from './modules/prisma/prisma.service';
 import { GlobalExceptionsFilter } from './global/exception/global-exception.filter';
 import { GlobalResponseInterceptor } from './global/response/global-response.interceptor';
+import * as basicAuth from 'express-basic-auth';
 
 async function bootstrap(): Promise<void> {
     const logger = new Logger('Bootstrap');
@@ -21,6 +22,17 @@ async function bootstrap(): Promise<void> {
         });
         app.setGlobalPrefix('api/v1');
 
+        // Basic Auth 미들웨어 추가
+        app.use(
+            [process.env.SWAGGER_URL], // Swagger 경로에 대한 Basic Auth 적용
+            basicAuth({
+                users: {
+                    [process.env.SWAGGER_USER]: process.env.SWAGGER_PASSWORD,
+                },
+                challenge: true,
+            }),
+        );
+
         const options = new DocumentBuilder()
             .setTitle('Techeervent')
             .setDescription('Techeervent의 API 명세입니다.')
@@ -33,7 +45,7 @@ async function bootstrap(): Promise<void> {
             .build();
 
         const document = SwaggerModule.createDocument(app, options);
-        SwaggerModule.setup('api/v1/docs', app, document);
+        SwaggerModule.setup(process.env.SWAGGER_URL, app, document);
 
         logger.log('Swagger 모듈 설정이 완료되었습니다.');
 

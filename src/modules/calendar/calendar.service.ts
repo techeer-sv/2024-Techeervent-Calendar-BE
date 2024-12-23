@@ -11,7 +11,9 @@ import { GetWinningResponse } from './dto/response/get.winning.response';
 import { UserRepository } from '../user/repository/user.repository';
 import {
     DuplicateCalendarByDate,
+    NotAcceptableAnswers,
     NotFoundQuestionException,
+    ValidationCalendarDate,
 } from '../../global/exception/custom.exception';
 import { QuestionRepository } from '../question/repository/question.repository';
 import { GetAnswerPagableResponse } from './dto/response/get.answer-pagable.response';
@@ -26,10 +28,18 @@ export class CalendarService {
         private readonly drawService: DrawService,
     ) {}
 
+    // 서버 날짜일자 반환
+    async getToday(): Promise<number> {
+        const serverDate = new Date();
+        return serverDate.getDate(); // 일
+    }
+
     // 출석 및 경품 추첨
     async createCalendarDraw(
         request: CreateCalendarRequest,
     ): Promise<GetDrawResponse> {
+        // 날짜 검증
+        await this.validateDate(request.calendarDate);
         const userId = await this.userRepository.getUserIdByHashedId(
             request.userId,
         );
@@ -43,6 +53,15 @@ export class CalendarService {
         return new GetDrawResponse(draw ? draw.drawName : null);
     }
 
+    // 서버 일자 valdation
+    private async validateDate(clientDate: number): Promise<void> {
+        const serverDay = await this.getToday();
+        if (clientDate !== serverDay) {
+            throw new ValidationCalendarDate(clientDate, serverDay);
+        }
+    }
+
+    // 캘린더 생성 시 중복 검사
     private async validateCalendarRequest(
         request: CreateCalendarRequest,
         userId: number,
@@ -66,6 +85,10 @@ export class CalendarService {
     async getAllAnswers(
         request: GetAnswerRequest,
     ): Promise<GetAnswerPagableResponse> {
+        const date = await this.getToday();
+        if (date !== 31) {
+            throw new NotAcceptableAnswers();
+        }
         const answers = await this.calendarRepository.getAllAnswers(request);
         const items = answers.items.map(
             (answer) => new GetAnswerResponse(answer),

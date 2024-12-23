@@ -10,26 +10,43 @@ import { Request, Response } from 'express';
 
 @Catch()
 export class GlobalExceptionsFilter implements ExceptionFilter {
+    private readonly logger = new Logger(GlobalExceptionsFilter.name);
+
     catch(exception: unknown, host: ArgumentsHost): void {
-        // 반환 타입을 void로 명시
         const ctx = host.switchToHttp();
         const response = ctx.getResponse<Response>();
         const request = ctx.getRequest<Request>();
 
-        // 기본 상태코드가 없는 경우, Internal Server Error로 처리
         const status =
             exception instanceof HttpException
                 ? exception.getStatus()
                 : HttpStatus.INTERNAL_SERVER_ERROR;
 
-        // 기본 메시지를 커스텀 메시지로 설정
-        const message =
-            status === HttpStatus.INTERNAL_SERVER_ERROR
-                ? '서버에서 오류가 발생했습니다. 잠시 후 다시 시도해주세요.'
-                : (exception as HttpException).message ||
-                  '알 수 없는 오류가 발생했습니다.';
+        let message: string | object;
 
-        // 응답 형식 설정
+        if (exception instanceof HttpException) {
+            const exceptionResponse = exception.getResponse();
+
+            if (
+                status === HttpStatus.BAD_REQUEST &&
+                typeof exceptionResponse === 'object' &&
+                'message' in exceptionResponse
+            ) {
+                const errorMessage = (exceptionResponse as any).message;
+                message = Array.isArray(errorMessage)
+                    ? errorMessage.join(', ') // 메시지가 배열인 경우 처리
+                    : errorMessage;
+            } else {
+                message = exception.message;
+            }
+        } else {
+            message =
+                status === HttpStatus.INTERNAL_SERVER_ERROR
+                    ? '서버에서 오류가 발생했습니다. 잠시 후 다시 시도해주세요.'
+                    : '알 수 없는 오류가 발생했습니다.';
+        }
+
+        // 응답 반환
         response.status(status).json({
             statusCode: status,
             timestamp: new Date().toISOString(),
@@ -37,8 +54,12 @@ export class GlobalExceptionsFilter implements ExceptionFilter {
             message,
         });
 
-        // 서버 로그 출력
-        const logger: Logger = new Logger('GlobalExceptionsFilter');
-        logger.error(exception);
+        // 예외 로깅
+        this.logger.error(
+            `Exception thrown: ${status} - ${
+                typeof message === 'string' ? message : JSON.stringify(message)
+            }`,
+            exception instanceof Error ? exception.stack : '',
+        );
     }
 }

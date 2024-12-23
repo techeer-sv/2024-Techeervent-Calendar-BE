@@ -11,8 +11,9 @@ export class DrawService {
     ) {}
 
     async executeDraw(date: number): Promise<DrawEntity | null> {
+        const drawOdds = parseFloat(process.env.ODDS_OF_WINNING);
         const count = await this.calendarRepository.getTodayWinningsCount(date);
-        const isWinner = Math.random() < 0.04;
+        const isWinner = Math.random() < drawOdds;
         if (isWinner && count < 4) {
             return await this.drawRepository.executeDrawLock();
         }
