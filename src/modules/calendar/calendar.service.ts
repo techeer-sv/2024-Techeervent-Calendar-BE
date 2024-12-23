@@ -11,6 +11,7 @@ import { GetWinningResponse } from './dto/response/get.winning.response';
 import { UserRepository } from '../user/repository/user.repository';
 import {
     DuplicateCalendarByDate,
+    NotAcceptableAnswers,
     NotFoundQuestionException,
     ValidationCalendarDate,
 } from '../../global/exception/custom.exception';
@@ -84,6 +85,10 @@ export class CalendarService {
     async getAllAnswers(
         request: GetAnswerRequest,
     ): Promise<GetAnswerPagableResponse> {
+        const date = await this.getToday();
+        if (date !== 31) {
+            throw new NotAcceptableAnswers();
+        }
         const answers = await this.calendarRepository.getAllAnswers(request);
         const items = answers.items.map(
             (answer) => new GetAnswerResponse(answer),

@@ -26,3 +26,9 @@ export class ValidationCalendarDate extends HttpException {
         );
     }
 }
+
+export class NotAcceptableAnswers extends HttpException {
+    constructor() {
+        super(`접근할 수 없는 날짜입니다.`, HttpStatus.NOT_ACCEPTABLE);
+    }
+}
