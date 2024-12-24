@@ -29,9 +29,13 @@ export class CalendarService {
     ) {}
 
     // 서버 날짜일자 반환
-    async getToday(): Promise<number> {
-        const serverDate = new Date();
-        return serverDate.getDate(); // 일
+    async getKSTToday(): Promise<number> {
+        const now = new Date();
+        // UTC+9 시간으로 변환된 Date 객체 생성
+        const kstDate = new Date(
+            now.toLocaleString('en-US', { timeZone: 'Asia/Seoul' }),
+        );
+        return kstDate.getDate(); // UTC+9 기준으로 일자 반환
     }
 
     // 출석 및 경품 추첨
@@ -55,7 +59,7 @@ export class CalendarService {
 
     // 서버 일자 valdation
     private async validateDate(clientDate: number): Promise<void> {
-        const serverDay = await this.getToday();
+        const serverDay = await this.getKSTToday();
         if (clientDate !== serverDay) {
             throw new ValidationCalendarDate(clientDate, serverDay);
         }
@@ -85,7 +89,7 @@ export class CalendarService {
     async getAllAnswers(
         request: GetAnswerRequest,
     ): Promise<GetAnswerPagableResponse> {
-        const date = await this.getToday();
+        const date = await this.getKSTToday();
         if (date >= 23 && date <= 30) {
             throw new NotAcceptableAnswers();
         }
