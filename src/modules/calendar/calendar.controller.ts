@@ -28,7 +28,7 @@ export class CalendarController {
         description: '서버의 일자를 조회합니다.',
     })
     async getToday(): Promise<ResultResponse<number>> {
-        const date = await this.calendarService.getToday();
+        const date = await this.calendarService.getKSTToday();
         return new ResultResponse(
             HttpStatus.OK,
             '서버 일자를 조회했습니다.',
