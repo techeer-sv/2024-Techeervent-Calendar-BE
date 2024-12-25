@@ -1,6 +1,7 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { IsNumber, IsString, IsUUID, Min, Max } from 'class-validator';
 import { Type } from 'class-transformer';
+import { IsTrimmedNotEmpty } from '../../../../global/validation/isTrimmedNotEmpty';
 
 export class CreateCalendarRequest {
     @ApiPropertyOptional({
@@ -35,5 +36,6 @@ export class CreateCalendarRequest {
             '테커벤트 정말 재밌네요! 앞으로도 이런 재밌는 프로젝트가 많아졌으면 좋겠습니다.',
     })
     @IsString()
+    @IsTrimmedNotEmpty()
     readonly calendarAnswer: string;
 }
