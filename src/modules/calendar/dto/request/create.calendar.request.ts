@@ -36,6 +36,6 @@ export class CreateCalendarRequest {
             '테커벤트 정말 재밌네요! 앞으로도 이런 재밌는 프로젝트가 많아졌으면 좋겠습니다.',
     })
     @IsString()
-    @IsTrimmedNotEmpty({ message: '답변 내용은 반드시 입력해야 합니다.' })
+    @IsTrimmedNotEmpty()
     readonly calendarAnswer: string;
 }

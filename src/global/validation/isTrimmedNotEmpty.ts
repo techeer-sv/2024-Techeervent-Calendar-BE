@@ -17,7 +17,7 @@ export function IsTrimmedNotEmpty(
                     return false;
                 },
                 defaultMessage(): string {
-                    return `${propertyName}은(는) 공백이 아닌 값을 입력해야 합니다.`;
+                    return `${propertyName}은(는) 반드시 입력해야 합니다.`;
                 },
             },
         });
