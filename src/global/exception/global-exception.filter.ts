@@ -36,15 +36,12 @@ export class GlobalExceptionsFilter implements ExceptionFilter {
                 message = (exceptionResponse as any).message;
             }
 
-            // 상세 정보 로그 출력
-            this.logger.error({
-                status,
-                exceptionName: exception.constructor.name,
-                message,
-                path: request.url,
-                method: request.method,
-                stack: (exception as Error).stack,
-            });
+            // 간소화된 로그 출력
+            this.logger.error(
+                `[${request.method}] ${request.url} - ${exception.constructor.name}: ${
+                    Array.isArray(message) ? message.join(', ') : message
+                } (status: ${status})`,
+            );
         } else if (status === HttpStatus.INTERNAL_SERVER_ERROR) {
             message =
                 '서버에서 오류가 발생했습니다. 잠시 후 다시 시도해주세요.';
