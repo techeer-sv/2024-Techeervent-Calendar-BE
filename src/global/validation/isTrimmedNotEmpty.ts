@@ -10,7 +10,7 @@ export function IsTrimmedNotEmpty(
             propertyName: propertyName,
             options: validationOptions,
             validator: {
-                validate(value: any): boolean {
+                validate(value: string): boolean {
                     if (typeof value === 'string') {
                         return value.trim().length > 0;
                     }
