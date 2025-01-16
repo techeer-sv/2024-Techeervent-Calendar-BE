@@ -10,7 +10,6 @@ import { GetDrawResponse } from '../draw/dto/response/get.draw.response';
 import { GetWinningResponse } from './dto/response/get.winning.response';
 import { UserRepository } from '../user/repository/user.repository';
 import {
-    DuplicateCalendarByDate,
     NotAcceptableAnswers,
     NotFoundQuestionException,
     ValidationCalendarDate,
@@ -42,47 +41,33 @@ export class CalendarService {
     async createCalendarDraw(
         request: CreateCalendarRequest,
     ): Promise<GetDrawResponse> {
+        const { calendarDate, questionId, userId } = request;
         // 날짜 검증
-        await this.validateDate(request.calendarDate);
-        const userId = await this.userRepository.getUserIdByHashedId(
-            request.userId,
-        );
-        await this.validateCalendarRequest(request, userId);
-        const draw = await this.drawService.executeDraw(request.calendarDate);
-        await this.calendarRepository.createCalendar(
-            request,
-            userId,
-            draw ? draw.drawId : null,
-        );
-        return new GetDrawResponse(draw ? draw.drawName : null);
-    }
-
-    // 서버 일자 valdation
-    private async validateDate(clientDate: number): Promise<void> {
         const serverDay = await this.getKSTToday();
-        if (clientDate !== serverDay) {
-            throw new ValidationCalendarDate(clientDate, serverDay);
+        if (calendarDate !== serverDay) {
+            throw new ValidationCalendarDate(calendarDate, serverDay);
         }
-    }
-
-    // 캘린더 생성 시 중복 검사
-    private async validateCalendarRequest(
-        request: CreateCalendarRequest,
-        userId: number,
-    ): Promise<void> {
-        if (
-            await this.calendarRepository.existingUserCalendarByDate(
-                userId,
-                request.calendarDate,
-            )
-        ) {
-            throw new DuplicateCalendarByDate();
-        }
-        if (
-            !(await this.questionRepository.getQuestionById(request.questionId))
-        ) {
+        // 질문 존재 여부 검증
+        if (!(await this.questionRepository.getQuestionById(questionId))) {
             throw new NotFoundQuestionException();
         }
+        // 유저 ID 조회
+        const relationUserId =
+            await this.userRepository.getUserIdByHashedId(userId);
+        // 캘린더 생성
+        const calendar = await this.calendarRepository.createCalendar(
+            request,
+            relationUserId,
+        );
+        // 추첨 후 당첨인 경우 캘린더 업데이트
+        const draw = await this.drawService.executeDraw(calendarDate);
+        if (draw) {
+            await this.calendarRepository.updateDraw(
+                calendar.calendarId,
+                draw.drawId,
+            );
+        }
+        return new GetDrawResponse(draw ? draw.drawName : null);
     }
 
     // 답변 목록 조회 및 검색

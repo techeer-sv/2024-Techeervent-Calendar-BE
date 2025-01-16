@@ -1,8 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { CalendarEntity } from '../entities/calendar.entity';
 import { GetAnswerRequest } from '../dto/request/get.answer.request';
 import { CreateCalendarRequest } from '../dto/request/create.calendar.request';
+import { DuplicateCalendarByDate } from '../../../global/exception/custom.exception';
 
 @Injectable()
 export class CalendarRepository {
@@ -11,21 +12,50 @@ export class CalendarRepository {
     async createCalendar(
         request: CreateCalendarRequest,
         userId: number,
-        drawId: number | null,
     ): Promise<CalendarEntity> {
         const {
             calendarDate,
             questionId,
             calendarAnswer,
         }: CreateCalendarRequest = request;
-        return this.prisma.calendar.create({
-            data: {
-                userId,
-                calendarDate,
-                questionId,
-                calendarAnswer,
-                drawId,
-            },
+        return this.prisma.$transaction(async () => {
+            const exists = await this.prisma.calendar.findFirst({
+                where: {
+                    userId,
+                    calendarDate,
+                },
+                select: {
+                    calendarId: true, // 어떤 필드든 하나만 선택하여 존재 여부만 확인
+                },
+            });
+            if (exists) {
+                throw new DuplicateCalendarByDate();
+            }
+            return this.prisma.calendar.create({
+                data: {
+                    userId,
+                    calendarDate,
+                    questionId,
+                    calendarAnswer,
+                    drawId: null,
+                },
+                include: {
+                    user: true,
+                    question: true,
+                    draw: true,
+                },
+            });
+        });
+    }
+
+    async updateDraw(
+        calendarId: number,
+        drawId: number,
+    ): Promise<CalendarEntity> {
+        Logger.debug(`Update drawId: ${drawId} in calendarId: ${calendarId}`);
+        return this.prisma.calendar.update({
+            where: { calendarId },
+            data: { drawId },
             include: {
                 user: true,
                 question: true,
@@ -55,22 +85,6 @@ export class CalendarRepository {
                 calendarDate: 'asc',
             },
         });
-    }
-
-    async existingUserCalendarByDate(
-        userId: number,
-        calendarDate: number,
-    ): Promise<boolean> {
-        const exists = await this.prisma.calendar.findFirst({
-            where: {
-                userId,
-                calendarDate,
-            },
-            select: {
-                calendarId: true, // 어떤 필드든 하나만 선택하여 존재 여부만 확인
-            },
-        });
-        return !!exists;
     }
 
     async getAllAnswers(
